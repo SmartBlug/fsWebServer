@@ -1,0 +1,67 @@
+<html>
+	<head>
+			<link href="default.css" rel="stylesheet">
+	</head>
+	<body>
+		<h1>File System</h1>
+		<div class="files" id="files">
+		</div>
+		<form class="upload" method="post" enctype="multipart/form-data">
+			<div>
+				<input type="file" id="filename" name="name" onchange="upload(this)">
+				<input class="button" type="submit" value="Upload" onclick="uploadButton()">
+				<input type="button" value="Config" onclick="location='/params'">
+			</div>
+		</form>
+		<script>
+			const handleDelete = event => {
+				var answer = confirm("Delete file "+event.target.firstChild.textContent+" ?");
+				if (answer) {
+					const request = fetch ("/delete", {
+						headers: {'Content-type': 'application/json'},
+						method: 'POST',
+						body: "{\"name\":\""+event.target.firstChild.textContent+"\"}",
+					});
+					loadFiles();
+				}
+			};
+
+			function loadFiles() {
+				fetch("/files").then(res => res.json()).then(function(data) {
+					files = document.getElementById('files');
+					files.innerHTML = "";
+					for (var i=0; i<data.length; i++) {
+						files.innerHTML = files.innerHTML + '<li><div class="filename">'+data[i].name+'</div><div class="filesize">'+data[i].size+'</div></li>';
+					}
+					var items = document.getElementsByTagName('li');
+					for (var i=0; i<items.length; i++) {
+						items[i].addEventListener('click', handleDelete);
+					}
+				});
+			}
+			function uploadButton() {
+				event.preventDefault();
+				document.getElementById('filename').click();
+			}
+			function upload(input){
+				var xhr = new XMLHttpRequest();
+
+				xhr.onreadystatechange = function() {
+					console.log(this.status);
+					if (this.readyState == 4 && this.status == 200) {
+						var response = JSON.parse(this.responseText);
+						console.log(response);
+						if (response["success"]) {
+							console.log("file uploaded");
+							loadFiles();
+						}
+					}
+				}
+				xhr.open("POST", "/upload", true);
+				xhr.send(new FormData(input.parentElement.parentElement));
+				document.getElementById('filename').value = "";
+			}
+			loadFiles();
+		</script>
+	</body>
+</html>

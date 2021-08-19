@@ -1,0 +1,314 @@
+/*body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, 
+pre, form, fieldset, input, textarea, p, blockquote, th, td { 
+  padding:0;
+  margin:0;}
+fieldset, img {border:0}
+focus {outline:none}
+*/
+
+html {background-color: #ebebeb}
+body {margin:0;padding:0 30px}
+/*form, li {margin: 0 30px}*/
+div {
+  padding:15px 0;
+  display: inline-block;
+}
+
+li {
+  list-style:none;
+  display:flex;
+  position: relative;
+}
+.files li {
+  border-top: solid 1px #cbc9c9;
+  padding: 0 10px;
+}
+
+/*li:last-child {border-bottom: solid 1px #cbc9c9}*/
+
+body,
+input,
+textarea,
+select {
+  font-family: 'Open Sans', sans-serif;
+  _font-size: 16px;
+  color: #4c4c4c;
+}
+
+h1 {
+  font-size: 32px;
+  _font-weight: 300;
+  color: #4c4c4c;
+  text-align: center;
+  padding-top: 10px;
+}
+
+.filesize {position: absolute;right: 0}
+.files {
+  width: 100%;
+  _padding-top:0;
+  padding:0;
+}
+
+.version {
+  position: absolute;
+  top: 50;
+  right: 30;
+  border: none;
+  background: none;
+  text-align: right;
+}
+
+input[type=text],input[type=password],select{
+  _width: 200px; 
+  height: 39px; 
+  -webkit-border-radius: 0px 4px 4px 0px/5px 5px 4px 4px; 
+  -moz-border-radius: 0px 4px 4px 0px/0px 0px 4px 4px; 
+  border-radius: 0px 4px 4px 0px/5px 5px 4px 4px; 
+  background-color: #fff; 
+  margin: 5px 20px 5px 0;
+  padding: 0 10px;
+}
+
+i {
+  _display: inline-block;
+  width: 26px;
+  background-color: #3a57af;
+  padding: 8px 0 0 8px;
+  margin-left: 15px;
+  -webkit-border-radius: 4px 0px 0px 4px; 
+  -moz-border-radius: 4px 0px 0px 4px; 
+  border-radius: 4px 0px 0px 4px;
+  color: white;
+
+  flex: none;
+  margin: 8px 0;
+  height: 24px;
+}
+
+input[type=text],input[type=password],select,i {
+  -webkit-box-shadow: 1px 2px 5px rgba(0,0,0,.09);
+  -moz-box-shadow: 1px 2px 5px rgba(0,0,0,.09); 
+  box-shadow: 1px 2px 5px rgba(0,0,0,.09); 
+  border: solid 0px #cbc9c9;
+}
+
+.button, input[type="submit"], input[type="button"] {
+  -webkit-box-shadow: 1px 2px 5px rgba(0,0,0,.4); 
+  -moz-box-shadow: 1px 2px 5px rgba(0,0,0,.4); 
+  box-shadow: 1px 2px 5px rgba(0,0,0,.4); 
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #3a57af), color-stop(1, #203f9b));
+	background:-moz-linear-gradient(top, #3a57af 5%, #203f9b 100%);
+	background:-webkit-linear-gradient(top, #3a57af 5%, #203f9b 100%);
+	background:-o-linear-gradient(top, #3a57af 5%, #203f9b 100%);
+	background:-ms-linear-gradient(top, #3a57af 5%, #203f9b 100%);
+	background:linear-gradient(to bottom, #3a57af 5%, #203f9b 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#3a57af', endColorstr='#203f9b',GradientType=0);
+	background-color:#3a57af;
+	-moz-border-radius:5px;
+	-webkit-border-radius:5px;
+	border-radius:5px;
+  _display:block;
+  cursor:pointer;
+	color:#ffffff;
+  _font-size: 14px;
+  _font-weight: 600;
+  padding: 8px 30px;
+  _margin: 0 0 20px 20px;
+	text-decoration:none;
+  text-shadow:0px 1px 0px #3a57af;
+  border:none;
+  float: right;
+  margin: 8px 0 8px 10px;
+}
+
+li input[type="button"] {float:none}
+
+.button:hover, input[type="submit"]:hover, input[type="button"]:hover {
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #203f9b), color-stop(1, #3a57af));
+	background:-moz-linear-gradient(top, #203f9b 5%, #3a57af 100%);
+	background:-webkit-linear-gradient(top, #203f9b 5%, #3a57af 100%);
+	background:-o-linear-gradient(top, #203f9b 5%, #3a57af 100%);
+	background:-ms-linear-gradient(top, #203f9b 5%, #3a57af 100%);
+	background:linear-gradient(to bottom, #203f9b 5%, #3a57af 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#203f9b', endColorstr='#3a57af',GradientType=0);
+	background-color:#203f9b;
+}
+
+input[type="submit"]:disabled {filter:grayscale(100%);cursor:auto}
+
+.files li:hover {
+  background-color: #ffb6b6;
+  cursor:pointer;
+}
+
+.upload i {cursor:pointer}
+.upload input[type="file"] {display: none}
+
+.fas:before, .far:before, .fab:before {content:"..."}
+
+form {
+  _padding: 0 30px;
+  width:100%
+}
+form div {
+  display:block;
+  _padding: 15px 30px;
+  border-top: solid 1px #cbc9c9;
+}
+
+t {
+  margin: -8px 10px;
+  padding: 0 10px;
+  background-color: #ebebeb;
+  display: inline-block;
+  border: none;
+}
+
+.group {
+  margin-bottom: 10px;
+  display: flex;
+}
+.list {display:block}
+
+.template {display:none}
+
+:root {
+  /*Background color when it's turned off*/
+  --vc-off-color: #d1d3d4;
+  /*Background color when it's turned on*/
+  --vc-on-color: #3a57af;
+  /*Animation speed and type*/
+  --vc-animation-speed: 0.15s ease-out;
+  /*Font used by the text*/
+  --vc-font-family: Arial;
+  /*The size used*/
+  --vc-font-size: 13px;
+  /*The font weight*/
+  --vc-font-weight: 300;
+  /*Font color when the switch is on*/
+  --vc-on-font-color: white;
+  /*Font color when the switch is off*/
+  --vc-off-font-color: white;
+  /*How far the OFF text is from the right side*/
+  --vc-label-position-off: 12px;
+  /*How far the ON text is from the left side*/
+  --vc-label-position-on: 11px;
+  /*Small switch width*/
+  --vc-width: 60px;
+  /*Small switch height*/
+  --vc-height: 30px;
+  /*Border radius for the handle*/
+  --vc-handle-border-radius: 20px;
+  /*Border radius for the box*/
+  --vc-box-border-radius: 18px;
+  /*Shadow for the handle*/
+  --vc-handle-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+  /*Handle color*/
+  --vc-handle-color: white;
+  /*Handle width*/
+  --vc-handle-width: 20px;
+  /*Handle height*/
+  --vc-handle-height: 20px;
+  /*The handle's width while the toggle is clicked*/
+  --vc-onclick-width: 30px;
+  /*Handle's distance from the top*/
+  --vc-handle-top: 5px;
+}
+
+.vc-toggle-container * {
+  font-family: var(--vc-font-family);
+  -webkit-transition: var(--vc-animation-speed);
+  -moz-transition: var(--vc-animation-speed);
+  -o-transition: var(--vc-animation-speed);
+  transition: var(--vc-animation-speed);
+}
+
+.vc-switch {
+  width: var(--vc-width);
+  height: var(--vc-height);
+}
+
+.vc-toggle-container {
+  border:none;
+  padding: 10px 0 0 0;
+}
+
+.vc-toggle-container label {
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+  border-radius: var(--vc-box-border-radius);
+  cursor: pointer;
+}
+
+.vc-switch-input {
+  position: absolute;
+  transform: translate3d(5px, 5px, 0);
+}
+
+.vc-switch-label {
+  position: relative;
+  display: block;
+  height: inherit;
+  font-size: var(--vc-font-size);
+  font-weight: var(--vc-font-weight);
+  background: var(--vc-off-color);
+  border-radius: inherit;
+}
+
+.vc-switch-label:before,
+.vc-switch-label:after {
+  position: absolute;
+  top: 50%;
+  margin-top: -0.5em;
+  line-height: 1.1;
+}
+
+.vc-switch-label:before {
+  content: attr(data-off);
+  color: var(--vc-on-font-color);
+}
+
+.vc-switch-label:after {
+  content: attr(data-on);
+  color: var(--vc-off-font-color);
+  opacity: 0;
+}
+
+.vc-switch-label:before {right: var(--vc-label-position-off)}
+.vc-switch-label:after {left: var(--vc-label-position-on)}
+.vc-switch-input:checked ~ .vc-switch-label {background: var(--vc-on-color)}
+.vc-switch-input:checked ~ .vc-switch-label:before {opacity: 0;}
+.vc-switch-input:checked ~ .vc-switch-label:after {opacity: 1;}
+
+.vc-handle {
+  position: absolute !important;
+  top: var(--vc-handle-top);
+  left: 5px;
+  background: var(--vc-handle-color);
+  border-radius: var(--vc-handle-border-radius);
+  box-shadow: var(--vc-handle-shadow);
+}
+
+.vc-handle {
+  width: var(--vc-handle-width);
+  height: var(--vc-handle-height);
+}
+
+.vc-handle:before {
+  content: "";
+  top: 50%;
+  left: 50%;
+  position: absolute !important;
+  margin: -6px 0 0 -6px;
+  width: 12px;
+  height: 12px;
+  border-radius: 6px;
+}
+
+.vc-switch-label:active ~ .vc-handle, .vc-handle:active {width: var(--vc-onclick-width);}
+.vc-switch-input:checked ~ .vc-handle {
+  left: unset;
+  right: 5px;
+}

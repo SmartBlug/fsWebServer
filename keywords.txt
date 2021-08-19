@@ -1,0 +1,33 @@
+#######################################
+# Syntax Coloring Map For fsWebServer
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+fsWebServer	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+setConfigHandler  KEYWORD2
+loadConfig        KEYWORD2
+saveConfig        KEYWORD2
+resetConfig       KEYWORD2
+getContentType    KEYWORD2
+handleFileRead    KEYWORD2
+
+#######################################
+# Instances (KEYWORD2)
+#######################################
+
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+CONFIG_GET    LITERAL1
+CONFIG_RESET  LITERAL1
+CONFIG_SAVE   LITERAL1
+CONFIG_RELOAD LITERAL1

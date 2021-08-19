@@ -1,0 +1,22 @@
+<html>
+	<head>
+		<link href="default.css" rel="stylesheet">
+		<script src="https://kit.fontawesome.com/389a68e554.js" crossorigin="anonymous"></script>
+	</head>
+	<body>
+		<h1>Parameters</h1>
+		<form action="/saveConfig" load="/config" class="formJSON">
+			<div class="group" label="Wifi Configuration">
+				<input type="text" name="ssid" logo="fas fa-wifi" placeholder="WIFI SSID" help="WIFI SSID" required>
+				<input type="password" name="pass" logo="fas fa-key" placeholder="WIFI Password" required>
+			</div>
+			<div>
+				<input type="submit" value="Save" disabled>
+				<input type="button" value="Backup" onclick="document.getElementById('configfile').click()">
+				<input type="button" value="Files" onclick="location='/fs'">
+				<a id="configfile" href="/config" download="config.json" hidden></a>
+			</div>
+		</form>
+		<script type="text/javascript" src="formJSON.js"></script>
+	</body>
+</html>
