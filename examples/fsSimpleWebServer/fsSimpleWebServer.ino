@@ -1,3 +1,8 @@
+/*
+    This sketch connect to WiFi and setup a web server using simple File System and json config file
+    Access Interface to http://ipaddress/ and upload files from SPIFFS directory except test.py
+*/
+
 #include <fsWebServer.h>
 #include <ArduinoJson.h>
 
@@ -13,13 +18,12 @@ DynamicJsonDocument config(500);
 JsonDocument * Config(int Mode) {
   switch (Mode) {
     case CONFIG_RESET:
-      Serial.println("[CONFIG_RESET]");
       config["ver"] = OTA_Version;
       config["ssid"] = ssid;
       config["pass"] = password;
       break;
     case CONFIG_RELOAD:
-      Serial.println("[CONFIG_RELOAD]");
+      config["ver"] = OTA_Version;
       break; 
   }
   return &config;
@@ -28,9 +32,9 @@ JsonDocument * Config(int Mode) {
 //**************************************************************************************************
 void setup() {
   Serial.begin(115200);
-  server.setConfigHandler(Config,true);
-  server.begin();
-  // Connect to Wifi
+  // Start server
+  server.begin(Config);
+  // Connect to WiFi
   Serial.print("Connecting to ");
   Serial.println((const char *)config["ssid"]);
   WiFi.begin((const char *)config["ssid"], (const char *)config["pass"]);
@@ -38,8 +42,7 @@ void setup() {
     delay(500);
     Serial.print(".");
   }
-  Serial.println("WiFi connected");
-  Serial.println("IP address: ");
+  Serial.print("\nWiFi connected using IP address ");
   Serial.println(WiFi.localIP());
 }
 

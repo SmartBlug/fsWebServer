@@ -234,38 +234,7 @@ void fsWebServer::handleNotFound(void) {
 
 //**************************************************************************************************
 void fsWebServer::handleConfig(void) {
-/*
-  #ifdef DEBUG
-    Serial.println("handleConfig");
-  #endif
-  //this->send_P(200, "application/json", NULL);
-  WiFiClient client = this->client();
-  JsonDocument * config;
-  config = this->ConfigHandler(CONFIG_GET);
-*/
-  //serializeJson(*config, Serial);
-  //this->send(200, "application/json","");
-  //this->send(200, "application/json", "configtxt");
-  //this->send_P(200, "application/json", NULL);
-  //this->sendHeader("Content-Type","application/json");
   serializeJson(*this->ConfigHandler(CONFIG_GET), this->client());
-/*  return;
-
-  String configtxt;
-
-  File file = SPIFFS.open("/config.json", "r");
-  if (!file) {
-    #ifdef DEBUG
-      Serial.println("file open failed");
-    #endif
-    this->Error("can't open config");
-  }
-  configtxt = file.readString();
-  //#ifdef OTA_Version
-  //  configtxt = configtxt.substring(configtxt.length()-1) + ",\"ver\":\"" + OTA_Version + "\"}";
-  //#endif
-  file.close();
-  this->send(200, "application/json", configtxt);*/
 }
 
 //**************************************************************************************************
@@ -313,34 +282,6 @@ void fsWebServer::resetConfig() {
 }
 
 //**************************************************************************************************
-/*bool fsWebServer::loadConfig(DynamicJsonDocument *config) {
-  #ifdef DEBUG
-    Serial.println("Loading config file...");
-  #endif
-  File file = SPIFFS.open("/config.json", "r");
-  if (!file) {
-    #ifdef DEBUG
-      Serial.println("Failed to open config file");
-    #endif
-    if (this->ConfigHandler) this->ConfigHandler(CONFIG_RESET);
-    return false;
-  }
-
-  // Deserialize the JSON document
-  DeserializationError error = deserializeJson(*config, file);
-  if (error) {
-    #ifdef DEBUG
-      Serial.println(F("Failed to read file, using default configuration"));
-    #endif
-    //initConfig(false);
-    return false;
-  }
-  file.close();
-  
-  return true;
-}
-*/
-//**************************************************************************************************
 bool fsWebServer::loadConfig(JsonDocument *config) {
   #ifdef DEBUG
     Serial.println("Loading config file...");
@@ -359,36 +300,9 @@ bool fsWebServer::loadConfig(JsonDocument *config) {
     */
   }
 
-  /*bool first = true;
-  String result = "[";
-  Dir dir = SPIFFS.openDir("/");
-  while (dir.next()) {
-    if (first) first=false;
-          else result = result + ",";
-    result = result + "{\"name\":\"";
-    result = result + dir.fileName();
-    result = result + "\",\"size\":";
-    File f = dir.openFile("r");
-    result = result + f.size();
-    result = result + "}";
-    f.close();
-  }
-  result = result + "]";
-  Serial.println(result);*/
-
-  /*#ifdef DEBUG
-    Serial.println("Before:");
-    serializeJson(*config, Serial);
-  #endif*/  
   // Deserialize the JSON document
   DeserializationError error = deserializeJson(*config, file);
   this->ConfigHandler(CONFIG_RELOAD);
-  /*#ifdef DEBUG
-    DynamicJsonDocument tst = *config;
-    Serial.println("After:");
-    Serial.println((const char *)tst["ver"]);
-    serializeJson(*config, Serial);
-  #endif*/  
 
   if (error) {
     #ifdef DEBUG
@@ -428,31 +342,10 @@ bool fsWebServer::saveConfig(JsonDocument *config) {
 }
 
 //**************************************************************************************************
-void fsWebServer::setConfigHandler(THandlerConfig Config, bool autoReset) {
-  this->ConfigHandler = Config;
-  if (autoReset) {
-    Serial.println(F("\nPress button to reset config..."));
-    delay(1000*RESET_DELAY);
-    pinMode(ONBOARD_BUTTON, INPUT);
-    if (digitalRead(ONBOARD_BUTTON)==0) {
-      #ifdef DEBUG
-        Serial.println("Button pressed, reseting config file...");
-      #endif
-      this->ConfigHandler(CONFIG_GET)->clear();
-      this->saveConfig(this->ConfigHandler(CONFIG_RESET));
-    }
-  }
-
-  if (SPIFFS.exists("/config.json")) this->loadConfig(this->ConfigHandler(CONFIG_GET));
-  else this->saveConfig(this->ConfigHandler(CONFIG_RESET));
-}
-
-//**************************************************************************************************
-fsWebServer::fsWebServer(int port = 80):ESP8266WebServer(port) {
+fsWebServer::fsWebServer(int port):ESP8266WebServer(port) {
 
   SPIFFS.begin();
-  this->ConfigHandler = 0;
-  
+ 
   ESP8266WebServer::on("/", HTTP_GET, std::bind(&fsWebServer::handleRoot, this));
   ESP8266WebServer::on("/fs", HTTP_GET, std::bind(&fsWebServer::handleFS, this));
   ESP8266WebServer::on("/params", HTTP_GET, std::bind(&fsWebServer::handleParams, this));
@@ -464,7 +357,51 @@ fsWebServer::fsWebServer(int port = 80):ESP8266WebServer(port) {
   ESP8266WebServer::on("/upgrade", HTTP_POST, std::bind(&fsWebServer::handle200, this),std::bind(&fsWebServer::handleFileUpgrade,this));
   ESP8266WebServer::on("/config", HTTP_GET, std::bind(&fsWebServer::handleConfig, this));
   ESP8266WebServer::on("/saveConfig", HTTP_POST, std::bind(&fsWebServer::handleSaveConfig, this));
-  //ESP8266WebServer::on("/resetConfig", HTTP_GET, std::bind(&fsWebServer::handleResetConfig, this));
   ESP8266WebServer::on("/resetConfig", HTTP_GET, std::bind(&fsWebServer::resetConfig, this));
   ESP8266WebServer::onNotFound(std::bind(&fsWebServer::handleNotFound,this));  
+}
+
+//**************************************************************************************************
+void fsWebServer::begin(THandlerConfig hConfig, bool autoWifi, bool autoReset) {
+  this->ConfigHandler = hConfig;
+  if (this->ConfigHandler) {
+    if (autoReset) {
+      #ifdef SERIAL_ENABLED
+        Serial.println(F("\nPress button to reset config..."));
+      #endif
+      delay(1000*RESET_DELAY);
+      pinMode(ONBOARD_BUTTON, INPUT);
+      if (digitalRead(ONBOARD_BUTTON)==0) {
+        #ifdef DEBUG
+          Serial.println("Button pressed, reseting config file...");
+        #endif
+        this->ConfigHandler(CONFIG_GET)->clear();
+        this->saveConfig(this->ConfigHandler(CONFIG_RESET));
+      }
+    }
+
+    if (SPIFFS.exists("/config.json")) this->loadConfig(this->ConfigHandler(CONFIG_GET));
+    else this->saveConfig(this->ConfigHandler(CONFIG_RESET));
+  }
+
+  ESP8266WebServer::begin();
+
+  if (autoWifi) {
+    JsonDocument *config = this->ConfigHandler(CONFIG_GET);
+    #ifdef SERIAL_ENABLED
+      Serial.print("\nAuto connecting to ");
+      Serial.println((const char *)(*config)["ssid"]);
+    #endif
+    WiFi.begin((const char *)(*config)["ssid"], (const char *)(*config)["pass"]);
+    while (WiFi.status() != WL_CONNECTED) {
+      delay(500);
+      #ifdef SERIAL_ENABLED
+        Serial.print(".");
+      #endif
+    }
+    #ifdef SERIAL_ENABLED
+      Serial.print("\nWiFi connected using IP address ");
+      Serial.println(WiFi.localIP());
+    #endif
+  }
 }

@@ -6,6 +6,7 @@
 #include <CRC32.h>
 
 //#define DEBUG
+#define SERIAL_ENABLED
 
 typedef std::function<JsonDocument *(int)> THandlerConfig;
 
@@ -19,13 +20,13 @@ typedef std::function<JsonDocument *(int)> THandlerConfig;
 
 class fsWebServer : public ESP8266WebServer {
   public:
-    fsWebServer(int port);
-    void setConfigHandler(THandlerConfig Config, bool autoReset=false);
+    fsWebServer(int port = 80);
     bool loadConfig(JsonDocument *config);
     bool saveConfig(JsonDocument *config);
     void resetConfig(void);
     String getContentType(String filename);
     bool handleFileRead(String path);
+    void begin(THandlerConfig hConfig, bool autoWifi=false, bool autoReset=true);
 
   private:
     void handleRoot(void);
